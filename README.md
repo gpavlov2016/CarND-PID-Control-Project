@@ -35,7 +35,7 @@ I implemented a dynamic version of the PID algorithm, taking into account vehicl
 The speed factor values range from 0 to 1, where 1 corresponds to speed 0 and 1 corresponds to maximum speed. The speed factor is used to scale down the P gain based on the observation that when speed increases the gain should be decreased to prevent oscilations. This technique indeed improves stability at higher speeds but has a negative side effect of reducing responsiveness which can cause veering of the lane during tight curves. To reduce the effect of reduced manuevrability, the D gain was scaled by `1-speed_factor`, meaning that when speed increases the D gain increases too. This helps because the D gain is very effective in responding to sudden CTE changes which is exactly what happens when entering a curve at high speed. In addition, the D parameter has balancing effect on the system which also helps in steady state. In summary, the steering angle calculation is as follows:
 `steer_value = -pid.Kp * pid.p_error*speed_factor -  pid.Kd * pid.d_error - pid.Ki * pid.i_error*(1-speed_factor)`
 
-###Throttle
+### Throttle
 The higher the speed the less stable the system is therefore whenever instability is detected the throttle is reduced. I used very simple but rather effective metric of detecting instability using the absolute value of CTE. Maximum CTE is around 4 (more than that the car is outside of the driving area) and the minimum is 0 and the throttle is negatively proportional to the absolute CTE:
 `throttle = 0.9*speed_factor*(MAX_CTE - fabs(cte))/MAX_CTE`
 
@@ -44,5 +44,5 @@ The first stage was determining what is the maximum value of the P gain without 
 
 ## Results
 The following video shows a vehicle controlled by the above PID algorithm in a simulator. The simulator sends CTE and speed for each frame to the PID controller server which calculates the steering angle and throttle and sends it back to the simulator which then moves the car accordingly.
-[![Watch the video](https://youtu.be/BY5pcmQY7Jw)](https://youtu.be/BY5pcmQY7Jw)
+[![Watch the video](https://j.gifs.com/DRnMGq.gif)](https://youtu.be/BY5pcmQY7Jw)
 
